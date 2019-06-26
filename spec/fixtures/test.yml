@@ -1,0 +1,6 @@
+foo:
+  bar:
+    string: hello
+    number: 2
+    bool: true
+
