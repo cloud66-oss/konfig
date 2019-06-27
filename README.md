@@ -1,3 +1,5 @@
+<img src="http://cdn2-cloud66-com.s3.amazonaws.com/images/oss-sponsorship.png" width=150/>
+
 # Konfig
 
 Konfig is a Kubernetes friendly Rails configuration file. While Rails applications can easily read YAML files to load configurations, Kubernetes is good at serving individual configuration values as files via Kubernetes Secrets. This means your Rails application needs to read the same configuration file from a YAML file in development or an individual file while running in Kubernetes. Konfig can load configuration and secrets from both YAML or folders with individual files and present them to your application the same way.
