@@ -1,8 +1,6 @@
 # Konfig
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/konfig`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Konfig is a Kubernetes friendly Rails configuration file. While Rails applications can easily read YAML files to load configurations, Kubernetes is good at serving individual configuration values as files via Kubernetes Secrets. This means your Rails application needs to read the same configuration file from a YAML file in development or an individual file while running in Kubernetes. Konfig can load configuration and secrets from both YAML or folders with individual files and present them to your application the same way.
 
 ## Installation
 
@@ -22,11 +20,18 @@ Or install it yourself as:
 
 ## Usage
 
-First, configure Konfig itself:
+```ruby
+Konfig.configuration.mode = :yaml
+Konfig.configuration.workdir = "settings/folder"
+Konfig.load
+```
+
+or if you'd like to use it in Kubernetes:
 
 ```ruby
-Konfig.mode = Rails.env.development? ? :development : :kuberentes
-Konfig.work_dir = File.join(Rails.root, 'config', 'settings')
+Konfig.configuration.mode = :directory
+Konfig.configuration.workdir = "settings/folder"
+Konfig.load
 ```
 
 Now you can use Konfig anywhere in the code:
@@ -45,13 +50,45 @@ some:
 ```
 
 ```bash
-# kubernetes mode
+# directory mode
 $ ls config/settings
-
 -rw-r--r--    1 khash  staff    20 10 May 07:20 some.configuration.value
+
+$ cat config/settings/some.configuration.value
+true
 ```
 
 The value in `some.configuration.value` file can be `true`. Konfig tries to clean the file and coerce the value into the right type before returning. If the file or the key in yaml is missing, it will return a `Konfig::MissingConfiguration` is thrown.
+
+### NULL / nil values
+
+By default YAML returns `nil` for a `null` value in a YAML file. This is also replicated in directory mode.
+
+### Configuration
+You can change or reach the following from `Konfig.configuration`
+
+`namespace`: Default is `Settings`
+`delimiter`: Default is `.`
+`default_config_file`: Default is `development.yml`
+`allow_nil`: Default is `true`
+`nil_word`: Default is `null`
+`mode`: No default value
+`workdir`: No default value
+
+### Data types
+
+The directory mode, supports the following data types in files and tries to return the right type:
+
+- Integer
+- Float
+- String
+- Date time
+- Boolean
+- Null (see above)
+
+### ERB
+
+YAML mode supports ERB in your YAML file, just like default Rails behavior
 
 ## Development
 
@@ -61,4 +98,4 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/konfig.
+Bug reports and pull requests are welcome on GitHub at https://github.com/khash/konfig.

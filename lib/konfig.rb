@@ -6,15 +6,34 @@ module Konfig
     @config ||= Konfig::Config.new
   end
 
+  def self.load
+    provider = ConfigProvider.provider(mode: self.configuration.mode, workdir: self.configuration.workdir)
+    provider.load
+  end
+
   class Config
     attr_writer :namespace
     attr_writer :delimiter
     attr_writer :default_config_file
     attr_writer :allow_nil
     attr_writer :nil_word
+    attr_writer :mode
+    attr_writer :workdir
 
     def namespace
       @namespace || "Settings"
+    end
+
+    def workdir
+      raise NotConfiguredError, "have you set workdir?" unless @workdir
+
+      @workdir
+    end
+
+    def mode
+      raise NotConfiguredError, "have you set mode?" unless @mode
+
+      @mode
     end
 
     def delimiter
