@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     konfig (0.1.0)
+      activesupport
       hash_dot (~> 2.4)
 
 GEM

@@ -14,9 +14,11 @@ describe Konfig::YamlProvider do
 
   it "should fetch a key" do
     provider = Konfig::YamlProvider.new(workdir: File.join(__dir__, "fixtures"), filename: "test.yml")
+    provider.load
     expect(provider.raw_settings.foo.bar.string).to eq "hello"
     expect(provider.raw_settings.foo.bar.number).to eq 2
     expect(provider.raw_settings.foo.bar.bool).to be_truthy
+    expect(provider.raw_settings.foo.bar.nil).to be_nil
 
     expect(Settings.foo.bar.string).to eq "hello"
     expect(Settings.foo.bar.number).to eq 2
@@ -25,6 +27,14 @@ describe Konfig::YamlProvider do
 
   it "should parse erb" do
     provider = Konfig::YamlProvider.new(workdir: File.join(__dir__, "fixtures"), filename: "with_erb.yml")
+    provider.load
     expect(Settings.this.contains.erb).to eq 2
+  end
+
+  it "should handle bad keys" do
+    provider = Konfig::YamlProvider.new(workdir: File.join(__dir__, "fixtures"), filename: "test.yml")
+    provider.load
+    expect { Settings.foo.bar.bad_key }.to raise_error NoMethodError
+    expect { Settings.no_available }.to raise_error NoMethodError
   end
 end

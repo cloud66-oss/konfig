@@ -3,4 +3,5 @@ foo:
     string: hello
     number: 2
     bool: true
+    nil: null
 

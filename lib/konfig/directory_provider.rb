@@ -1,23 +1,30 @@
+require_relative "config_provider"
 require "date"
 
 module Konfig
-  class FileReader
-    NAME_DELIMITER = "."
-    SETTING_NAME = "Settings"
+  class NilClass; end
 
+  NIL_VALUE = NilClass.new
+
+  class DirectoryProvider < ConfigProvider
     def initialize(workdir:)
-      raise ArgumentError unless workdir
-      @workdir = workdir
+      super(mode: :yaml, workdir: workdir)
+      @files = Dir.children(@workdir)
+    end
+
+    def load
+      build_object_from_list(@files)
     end
 
     private
 
     # deserializers. order matters here
     DESERIALIZERS = [
-      lambda { |value| Integer(value) rescue nil }, # integer
-      lambda { |value| Float(value) rescue nil }, # float
-      lambda { |value| (["true", "false"].include?(value)) ? (value == "true") : nil }, # boolean
-      lambda { |value| DateTime.parse(value) rescue nil }, # date time
+      lambda { |value| Integer(value) rescue NIL_VALUE }, # integer
+      lambda { |value| Float(value) rescue NIL_VALUE }, # float
+      lambda { |value| (["true", "false"].include?(value)) ? (value == "true") : NIL_VALUE }, # boolean
+      lambda { |value| DateTime.parse(value) rescue NIL_VALUE }, # date time
+      lambda { |value| (value == Konfig.configuration.nil_word && Konfig.configuration.allow_nil) ? nil : NIL_VALUE }, # nil value
       lambda { |value| value }, # string. should always be the last one
     ]
 
@@ -32,7 +39,7 @@ module Konfig
       # assume a float first
       DESERIALIZERS.each do |deseralizer|
         result = deseralizer.call(value)
-        return result if result
+        return result unless result == NIL_VALUE
       end
 
       raise UnsupportedValueType, "'#{value}' is unsupported type"
@@ -49,17 +56,19 @@ module Konfig
     end
 
     def build_object_from_list(list)
-      Object.send(:remove_const, SETTING_NAME) if Object.const_defined?(SETTING_NAME)
+      Object.send(:remove_const, Konfig.configuration.namespace) if Object.const_defined?(Konfig.configuration.namespace)
 
-      result = []
+      full_hash = {}
       hash_list = build_hash_from_list(list)
       hash_list.each do |item|
-        Object.const_set(SETTING_NAME, item.to_dot)
+        full_hash.deep_merge!(item)
       end
+
+      Object.const_set(Konfig.configuration.namespace, full_hash.to_dot)
     end
 
     def build_hash(key, value)
-      parts = key.split(NAME_DELIMITER)
+      parts = key.split(Konfig.configuration.delimiter)
       parts << value
       parts.reverse.inject { |a, n| { n => a } }
     end
