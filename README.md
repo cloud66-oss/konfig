@@ -7,7 +7,7 @@ Konfig is a Kubernetes friendly Rails configuration file. While Rails applicatio
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'konfig'
+gem 'rb-konfig'
 ```
 
 And then execute:
@@ -16,7 +16,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install konfig
+    $ gem install rb-konfig
 
 ## Usage
 

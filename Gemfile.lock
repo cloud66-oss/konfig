@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    konfig (0.1.0)
+    rb-konfig (0.1.0)
       activesupport
       hash_dot (~> 2.4)
 
@@ -65,8 +65,8 @@ DEPENDENCIES
   bundler (~> 2.0)
   byebug
   factory_bot (~> 5.0)
-  konfig!
   rake (~> 10.0)
+  rb-konfig!
   rspec (~> 3.8)
   rubocop (~> 0.69)
   rubocop-performance (~> 1.3)

@@ -3,7 +3,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "konfig/version"
 
 Gem::Specification.new do |spec|
-  spec.name = "konfig"
+  spec.name = "rb-konfig"
   spec.version = Konfig::VERSION
   spec.authors = ["Khash Sajadi"]
   spec.email = ["khash@sajadi.co.uk"]
