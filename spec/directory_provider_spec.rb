@@ -46,6 +46,33 @@ describe Konfig::DirectoryProvider do
     expect(Settings.foo.bar.fuzz.nil).to eq "null"
   end
 
+  it "should respect env var overrides" do
+    list = [
+      "foo.bar.fuzz.bool",
+      "foo.bar.fuzz.string",
+      "foo.bar.fuzz.float",
+      "foo.bar.fuzz.number",
+      "foo.bar.fuzz.date",
+      "foo.bar.fuzz.json",
+    ]
+
+    ENV["FOO_BAR_FUZZ_BOOL"] = "false"
+
+    provider = Konfig::DirectoryProvider.new(workdir: File.join(__dir__, "fixtures", "samples"))
+    Konfig.configuration.allow_nil = true
+    provider.load
+    expect(Settings.foo.bar.fuzz.bool).not_to be_truthy
+    expect(Settings.foo.bar.fuzz.number).to eq 13
+    expect(Settings.foo.bar.fuzz.float).to eq 1.244
+    expect(Settings.foo.bar.fuzz.string).to eq "hello"
+    expect(Settings.foo.bar.fuzz.date).to eq DateTime.parse("12/4/2011 10:21:22")
+    expect(Settings.foo.bar.fuzz.nil).to be_nil
+
+    Konfig.configuration.allow_nil = false
+    provider.load
+    expect(Settings.foo.bar.fuzz.nil).to eq "null"
+  end
+
   it "should handle bad keys" do
     provider = Konfig::DirectoryProvider.new(workdir: File.join(__dir__, "fixtures", "samples"))
     provider.load

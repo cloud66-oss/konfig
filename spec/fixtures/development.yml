@@ -3,6 +3,7 @@ some:
     are:
       too:
         good: 234
+        not_bad: true
 other:
   things:
     are:

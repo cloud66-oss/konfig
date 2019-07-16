@@ -18,6 +18,7 @@ module Konfig
       content = YAML.load(ERB.new(IO.read(@file)).result).deep_symbolize_keys if @file and File.exist?(@file)
       content ||= {}
 
+      content = Konfig::EnvReplacer.replace(content)
       @raw_settings = content.to_dot
       Object.send(:remove_const, Konfig.configuration.namespace) if Object.const_defined?(Konfig.configuration.namespace)
       Object.const_set(Konfig.configuration.namespace, @raw_settings)

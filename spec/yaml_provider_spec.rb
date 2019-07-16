@@ -46,4 +46,17 @@ describe Konfig::YamlProvider do
     expect(Settings.other.things.are.even.better[0][:some]).to eq 1
     expect(Settings.other.things.are.even.better[0][:value]).to be_truthy
   end
+
+  it "environment variable overrides should work" do
+    ENV["SOME_THINGS_ARE_TOO_GOOD"] = "999"
+    ENV["OTHER_THINGS_ARE_EVEN_BETTER"] = "[{ \"some\": 2, \"value\": true }]"
+
+    provider = Konfig::YamlProvider.new(workdir: File.join(__dir__, "fixtures"), filename: "development.yml")
+    provider.load
+    expect(Settings.other.things.are.even.better).not_to be_nil
+    expect(Settings.other.things.are.even.better).to be_a_kind_of Array
+    expect(Settings.other.things.are.even.better[0][:some]).to eq 2
+    expect(Settings.other.things.are.even.better[0][:value]).to be_truthy
+    expect(Settings.some.things.are.too.good).to eq 999
+  end
 end
