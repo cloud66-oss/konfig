@@ -37,4 +37,13 @@ describe Konfig::YamlProvider do
     expect { Settings.foo.bar.bad_key }.to raise_error NoMethodError
     expect { Settings.no_available }.to raise_error NoMethodError
   end
+
+  it "should work with hash objects" do
+    provider = Konfig::YamlProvider.new(workdir: File.join(__dir__, "fixtures"), filename: "development.yml")
+    provider.load
+    expect(Settings.other.things.are.even.better).not_to be_nil
+    expect(Settings.other.things.are.even.better).to be_a_kind_of Array
+    expect(Settings.other.things.are.even.better[0][:some]).to eq 1
+    expect(Settings.other.things.are.even.better[0][:value]).to be_truthy
+  end
 end

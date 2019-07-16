@@ -3,3 +3,8 @@ some:
     are:
       too:
         good: 234
+other:
+  things:
+    are:
+      even:
+        better: [{ some: 1, hash: 2, value: true }]

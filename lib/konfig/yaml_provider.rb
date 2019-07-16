@@ -15,7 +15,7 @@ module Konfig
     end
 
     def load
-      content = YAML.load(ERB.new(IO.read(@file)).result) if @file and File.exist?(@file)
+      content = YAML.load(ERB.new(IO.read(@file)).result).deep_symbolize_keys if @file and File.exist?(@file)
       content ||= {}
 
       @raw_settings = content.to_dot
