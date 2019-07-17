@@ -34,8 +34,8 @@ describe Konfig::YamlProvider do
   it "should handle bad keys" do
     provider = Konfig::YamlProvider.new(workdir: File.join(__dir__, "fixtures"), filename: "test.yml")
     provider.load
-    expect { Settings.foo.bar.bad_key }.to raise_error NoMethodError
-    expect { Settings.no_available }.to raise_error NoMethodError
+    expect { Settings.foo.bar.bad_key }.to raise_error Konfig::KeyError
+    expect { Settings.no_available }.to raise_error Konfig::KeyError
   end
 
   it "should work with hash objects" do

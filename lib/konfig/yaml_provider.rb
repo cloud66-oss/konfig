@@ -1,6 +1,7 @@
 require_relative "config_provider"
 require "yaml"
-require "hash_dot"
+#require "hash_dot"
+require "ostruct"
 require "erb"
 
 module Konfig
@@ -19,7 +20,8 @@ module Konfig
       content ||= {}
 
       content = Konfig::EnvReplacer.replace(content)
-      @raw_settings = content.to_dot
+      os = Konfig::Option.new
+      @raw_settings = os.load(content)
       Object.send(:remove_const, Konfig.configuration.namespace) if Object.const_defined?(Konfig.configuration.namespace)
       Object.const_set(Konfig.configuration.namespace, @raw_settings)
     rescue Psych::SyntaxError => exc

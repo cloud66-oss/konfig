@@ -42,7 +42,9 @@ module Konfig
       end
 
       full_hash = Konfig::EnvReplacer.replace(full_hash)
-      Object.const_set(Konfig.configuration.namespace, full_hash.to_dot)
+      os = Konfig::Option.new
+      full_hash = os.load(full_hash)
+      Object.const_set(Konfig.configuration.namespace, full_hash)
     end
 
     def build_hash(key, value)

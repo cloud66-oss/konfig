@@ -76,7 +76,7 @@ describe Konfig::DirectoryProvider do
   it "should handle bad keys" do
     provider = Konfig::DirectoryProvider.new(workdir: File.join(__dir__, "fixtures", "samples"))
     provider.load
-    expect { Settings.foo.bar.bad_key }.to raise_error NoMethodError
-    expect { Settings.no_available }.to raise_error NoMethodError
+    expect { Settings.foo.bar.bad_key }.to raise_error Konfig::KeyError
+    expect { Settings.no_available }.to raise_error Konfig::KeyError
   end
 end

@@ -3,4 +3,5 @@ module Konfig
   class FileNotFound < Error; end
   class NotConfiguredError < Error; end
   class InvalidSettingName < Error; end
+  class KeyError < Error; end
 end

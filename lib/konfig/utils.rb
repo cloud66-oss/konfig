@@ -26,6 +26,7 @@ module Konfig
   ]
 
   class Utils
+    # coreces the given value (string) into the best possible type
     def self.coerce(value)
       # assume a float first
       DESERIALIZERS.each do |deseralizer|
