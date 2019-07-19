@@ -15,7 +15,7 @@ module Konfig
   class Config
     attr_writer :namespace
     attr_writer :delimiter
-    attr_writer :default_config_file
+    attr_writer :default_config_files
     attr_writer :allow_nil
     attr_writer :nil_word
     attr_writer :mode
@@ -53,8 +53,12 @@ module Konfig
       @delimiter || "."
     end
 
-    def default_config_file
-      @default_config_file || "development.yml"
+    def default_config_files
+      if defined?(Rails)
+        @default_config_files || ["#{Rails.env.downcase}.yml", "#{Rails.env.downcase}.local.yml"]
+      else
+        @default_config_files || ["development.yml", "development.local.yml"]
+      end
     end
 
     def allow_nil
