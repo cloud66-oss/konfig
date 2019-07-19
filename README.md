@@ -42,7 +42,8 @@ Now you can use Konfig anywhere in the code:
 puts Settings.some.configuration.value
 ```
 
-In `development` mode, Konfig, looks for `development.yml` in `work_dir`. In `kubernetes` mode, it looks for a file for each one of the given configuration keys. For example:
+In `file` mode, Konfig, looks for any of the files specified in `default_config_files`. By default and in a non-Rails environment this will be `development.yml` and `development.local.yml` files in `work_dir`. In a Rails environment, this will be `ENVIRONMENT.yml` and `ENVIRONMENT.local.yml` files (ie `production.yml` and `production.local.yml`) files. Files added to the list later will override the values in the earlier defined files. This menas, `production.local.yml` values will override `production.yml` values.
+In `kubernetes` mode, it looks for a file for each one of the given configuration keys. For example:
 
 ```yml
 # development.yml
@@ -71,11 +72,12 @@ You can change or reach the following from `Konfig.configuration`
 
 `namespace`: Default is `Settings`
 `delimiter`: Default is `.`
-`default_config_file`: Default is `development.yml`
+`default_config_files`: Default is [`development.yml`, `development.local.yml`]
 `allow_nil`: Default is `true`
 `nil_word`: Default is `null`
 `mode`: No default value
 `workdir`: No default value
+`schema`: Configuration validation schema. If available, the loaded, merged and parsed configuration is validated against this schema. See [Dry-Schema](https://dry-rb.org/gems/dry-schema/) for more information.
 
 ### Data types
 
@@ -86,6 +88,7 @@ The directory mode, supports the following data types in files and tries to retu
 - String
 - Date time
 - Boolean
+- JSON
 - Null (see above)
 
 ### ERB
@@ -97,6 +100,26 @@ YAML mode supports ERB in your YAML file, just like default Rails behavior
 After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
 To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+
+## CLI
+
+Konfig has a CLI to generate validation schema based on a given yaml file. To generate, run:
+
+```bash
+$ konfig gs --in sample.yml
+```
+
+This will generate the ruby code that can be used for `Konfig.configuration.schema` like the one below:
+
+```ruby
+Konfig.configuration.schema do
+  required(:some).schema do
+    required(:setting).filled(:string)
+    required(:another).filled(:integer)
+    required(:and_more).filled(:bool)
+  end
+end
+```
 
 ## Contributing
 
