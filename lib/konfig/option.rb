@@ -1,4 +1,4 @@
-require 'ostruct'
+require "ostruct"
 
 module Konfig
   class Option < OpenStruct
@@ -14,6 +14,7 @@ module Konfig
 
     def load(h)
       marshal_load(__convert(h).marshal_dump)
+      validate!
       self
     end
 
@@ -23,6 +24,17 @@ module Konfig
 
     def has_key?(key)
       table.has_key?(key)
+    end
+
+    def validate!
+      if Konfig.configuration.schema
+        v_res = Konfig.configuration.schema.(self.marshal_dump)
+
+        unless v_res.success?
+          error = Konfig::ValidationError.format(v_res)
+          raise Konfig::ValidationError.new("Config validation failed:\n\n#{error}")
+        end
+      end
     end
 
     SETTINGS_RESERVED_NAMES = %w[select collect test count zip min max].freeze
@@ -52,6 +64,26 @@ module Konfig
       super
     end
 
+    def generate_schema(start = nil)
+      start = self if start.nil?
+      result = []
+      start.table.each do |k, v|
+        if v.is_a?(Option)
+          result << "required(:#{k}).schema do"
+          result << generate_schema(v)
+          result << "end"
+        elsif [String, Integer, Numeric, Array].include? v.class
+          result << generate_required(k, v)
+        elsif [TrueClass, FalseClass].include? v.class
+          result << "required(:#{k}).filled(:bool)"
+        elsif v.nil?
+          result << "required(:#{k})"
+        end
+      end
+
+      return result
+    end
+
     protected
 
     def __convert(h)
@@ -70,6 +102,12 @@ module Konfig
         s.send("#{k}=".to_sym, v)
       end
       s
+    end
+
+    private
+
+    def generate_required(k, v)
+      "required(:#{k}).filled(:#{v.class.name.downcase})"
     end
   end
 end

@@ -1,4 +1,5 @@
 require "active_support/core_ext/hash"
+require "dry-schema"
 Dir["#{File.dirname(__FILE__)}/konfig/**/*.rb"].each { |f| load(f) }
 
 module Konfig
@@ -34,6 +35,18 @@ module Konfig
       raise NotConfiguredError, "have you set mode?" unless @mode
 
       @mode
+    end
+
+    def schema=(value)
+      @schema = value
+    end
+
+    def schema(&block)
+      if block_given?
+        @schema = Dry::Schema.define(&block)
+      else
+        @schema
+      end
     end
 
     def delimiter

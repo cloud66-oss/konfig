@@ -59,4 +59,10 @@ describe Konfig::YamlProvider do
     expect(Settings.other.things.are.even.better[0][:value]).to be_truthy
     expect(Settings.some.things.are.too.good).to eq 999
   end
+
+  it "should ignore erb if forced" do
+    provider = Konfig::YamlProvider.new(workdir: File.join(__dir__, "fixtures"), filename: "with_erb.yml")
+    provider.load(false)
+    expect(Settings.this.contains.erb).to eq "<%= 1 + 1 %>"
+  end
 end

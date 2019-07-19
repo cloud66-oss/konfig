@@ -29,4 +29,33 @@ describe Konfig do
   ensure
     Konfig.configuration.default_config_file = "development.yml"
   end
+
+  it "should support dry-schemas" do
+    Object.send(:remove_const, Konfig.configuration.namespace) if Object.const_defined?(Konfig.configuration.namespace)
+
+    Konfig.configuration.mode = :yaml
+    Konfig.configuration.workdir = File.join(__dir__, "fixtures")
+    Konfig.configuration.default_config_file = "test.yml"
+    Konfig.configuration.schema do
+      required(:bad_item).filled(:string)
+    end
+
+    expect { Konfig.load }.to raise_error Konfig::ValidationError
+
+    expect do
+      Konfig.configuration.schema do
+        required(:foo).schema do
+          required(:bar).schema do
+            required(:string).filled(:string)
+            required(:number).filled(:integer)
+            required(:bool).filled(:bool)
+            required(:nil).filled(:nil)
+          end
+        end
+      end
+    end.not_to raise_error
+  ensure
+    Konfig.configuration.default_config_file = "development.yml"
+    Konfig.configuration.schema = nil
+  end
 end
