@@ -20,9 +20,14 @@ module Konfig
     attr_writer :nil_word
     attr_writer :mode
     attr_writer :workdir
+    attr_writer :env_prefix
 
     def namespace
       @namespace || "Settings"
+    end
+
+    def env_prefix
+      @env_prefix || "KONFIG"
     end
 
     def workdir

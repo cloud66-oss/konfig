@@ -56,7 +56,7 @@ describe Konfig::DirectoryProvider do
       "foo.bar.fuzz.json",
     ]
 
-    ENV["FOO_BAR_FUZZ_BOOL"] = "false"
+    ENV["KONFIG_FOO_BAR_FUZZ_BOOL"] = "false"
 
     provider = Konfig::DirectoryProvider.new(workdir: File.join(__dir__, "fixtures", "samples"))
     Konfig.configuration.allow_nil = true

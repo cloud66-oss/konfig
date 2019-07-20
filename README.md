@@ -69,6 +69,10 @@ The value in `some.configuration.value` file can be `true`. Konfig tries to clea
 
 By default YAML returns `nil` for a `null` value in a YAML file. This is also replicated in directory mode.
 
+### Environment Variable Overrides
+
+Settings can be overridden by values in environment variables. To override a value, set an environment variable that reflects the full path to the setting, replacing `.` with `_` and prefixing it with `KONFIG_`. You can change the prefix using `Konfig.configuration.env_prefix`. For example, `Settings.this.is.a.test` can be overridden with `KONFIG_THIS_IS_A_TEST`. Environment variables are not parsed for Ruby (ERB) but are coerced into the right type just like other settings.
+
 ### Configuration
 You can change or reach the following from `Konfig.configuration`
 

@@ -48,8 +48,8 @@ describe Konfig::YamlProvider do
   end
 
   it "environment variable overrides should work" do
-    ENV["SOME_THINGS_ARE_TOO_GOOD"] = "999"
-    ENV["OTHER_THINGS_ARE_EVEN_BETTER"] = "[{ \"some\": 2, \"value\": true }]"
+    ENV["KONFIG_SOME_THINGS_ARE_TOO_GOOD"] = "999"
+    ENV["KONFIG_OTHER_THINGS_ARE_EVEN_BETTER"] = "[{ \"some\": 2, \"value\": true }]"
 
     provider = Konfig::YamlProvider.new(workdir: File.join(__dir__, "fixtures"), filenames: ["development.yml"])
     provider.load
@@ -58,6 +58,17 @@ describe Konfig::YamlProvider do
     expect(Settings.other.things.are.even.better[0][:some]).to eq 2
     expect(Settings.other.things.are.even.better[0][:value]).to be_truthy
     expect(Settings.some.things.are.too.good).to eq 999
+  end
+
+  it "should allow custom environment variable prefix" do
+    Konfig.configuration.env_prefix = "CHANGED"
+    ENV["CHANGED_SOME_THINGS_ARE_TOO_GOOD"] = "999"
+
+    provider = Konfig::YamlProvider.new(workdir: File.join(__dir__, "fixtures"), filenames: ["development.yml"])
+    provider.load
+    expect(Settings.some.things.are.too.good).to eq 999
+  ensure
+    Konfig.configuration.env_prefix = "KONFIG"
   end
 
   it "should ignore erb if forced" do

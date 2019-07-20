@@ -20,7 +20,7 @@ module Konfig
     def self.get_env(key, value, obj)
       raise InvalidSettingNameError if key.length <= 1
 
-      env_key = key[1..-1]
+      env_key = "#{Konfig.configuration.env_prefix}_#{key[1..-1]}"
       if ENV.has_key? env_key
         return Konfig::Utils.coerce(ENV[env_key])
       else
