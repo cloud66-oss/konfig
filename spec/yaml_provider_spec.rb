@@ -88,4 +88,9 @@ describe Konfig::YamlProvider do
 
     expect(Settings.foo.bar.string).to eq "hello"
   end
+
+  it "should throw a useful error when the file is empty" do
+    provider = Konfig::YamlProvider.new(workdir: File.join(__dir__, "fixtures"), filenames: ["empty.yml"])
+    expect { provider.load }.to raise_error Konfig::FileError
+  end
 end

@@ -21,6 +21,7 @@ module Konfig
         raise FileError, "file #{f} is empty" if file_content.blank?
 
         yaml_content = parse ? ERB.new(file_content).result : file_content
+        raise FileError, "#{f} seems empty" unless yaml_content
         current_content = YAML.load(yaml_content).deep_symbolize_keys if f and File.exist?(f)
         current_content = Konfig::EnvReplacer.replace(current_content)
 
