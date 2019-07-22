@@ -5,6 +5,7 @@ describe Konfig::YamlProvider do
 
   it "should fail with bad file" do
     expect { Konfig::YamlProvider.new(workdir: File.join(__dir__, "fixtures"), filenames: ["bad_file.yml"]) }.to raise_error Konfig::FileNotFound
+    expect { Konfig::YamlProvider.new(workdir: File.join(__dir__, "fixtures"), filenames: ["bad_file.yml", "another_bad_file.yml"]) }.to raise_error Konfig::FileNotFound
   end
 
   it "should read development.yml by default" do
@@ -92,5 +93,10 @@ describe Konfig::YamlProvider do
   it "should throw a useful error when the file is empty" do
     provider = Konfig::YamlProvider.new(workdir: File.join(__dir__, "fixtures"), filenames: ["empty.yml"])
     expect { provider.load }.to raise_error Konfig::FileError
+  end
+
+  it "should allow some missing files when more than one" do
+    provider = Konfig::YamlProvider.new(workdir: File.join(__dir__, "fixtures"), filenames: ["test.yml", "bad_file.yml"])
+    expect { provider.load }.not_to raise_error
   end
 end
