@@ -24,7 +24,9 @@ module Konfig
 
         yaml_content = parse ? ERB.new(file_content).result : file_content
         raise FileError, "#{f} seems empty" unless yaml_content
-        current_content = YAML.load(yaml_content).deep_symbolize_keys if f and File.exist?(f)
+        parsed = YAML.load(yaml_content)
+        raise FileError, "#{f} cannot be loaded as YAML" unless parsed
+        current_content = parsed.deep_symbolize_keys if f and File.exist?(f)
         current_content = Konfig::EnvReplacer.replace(current_content)
 
         content = content.deep_merge(current_content)
