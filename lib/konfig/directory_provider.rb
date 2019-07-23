@@ -10,6 +10,7 @@ module Konfig
     end
 
     def load
+      Konfig.configuration.logger.info "Loading files from #{@workdir}"
       build_object_from_list(@files)
     end
 

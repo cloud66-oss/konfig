@@ -8,7 +8,7 @@ module Konfig
   end
 
   def self.load
-    provider = ConfigProvider.provider(mode: self.configuration.mode, workdir: self.configuration.workdir)
+    provider = ProviderFactory.create_provider(mode: self.configuration.mode, workdir: self.configuration.workdir)
     provider.load
   end
 
@@ -21,6 +21,7 @@ module Konfig
     attr_writer :mode
     attr_writer :workdir
     attr_writer :env_prefix
+    attr_writer :logger
 
     def namespace
       @namespace || "Settings"
@@ -40,6 +41,10 @@ module Konfig
       raise NotConfiguredError, "have you set mode?" unless @mode
 
       @mode
+    end
+
+    def logger
+      @logger || (defined?(Rails) ? Rails.logger : Logger.new(STDOUT))
     end
 
     def schema=(value)

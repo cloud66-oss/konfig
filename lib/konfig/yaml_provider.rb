@@ -19,6 +19,7 @@ module Konfig
       @files.each do |f|
         # since we've looked for file existence before, we can skip any that's missing
         next if !File.exists?(f)
+        Konfig.configuration.logger.info "Loading #{f}"
         file_content = IO.read(f)
         raise FileError, "file #{f} is empty" if file_content.blank?
 
