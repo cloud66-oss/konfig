@@ -129,4 +129,4 @@ end
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/khash/konfig.
+Bug reports and pull requests are welcome on GitHub at https://github.com/cloud66-oss/konfig.
