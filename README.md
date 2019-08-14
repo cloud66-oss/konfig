@@ -76,14 +76,14 @@ Settings can be overridden by values in environment variables. To override a val
 ### Configuration
 You can change or reach the following from `Konfig.configuration`
 
-`namespace`: Default is `Settings`
-`delimiter`: Default is `.`
-`default_config_files`: Default is [`development.yml`, `development.local.yml`]
-`allow_nil`: Default is `true`
-`nil_word`: Default is `null`
-`mode`: No default value
-`workdir`: No default value
-`schema`: Configuration validation schema. If available, the loaded, merged and parsed configuration is validated against this schema. See [Dry-Schema](https://dry-rb.org/gems/dry-schema/) for more information.
+* `namespace`: Default is `Settings`
+* `delimiter`: Default is `.`
+* `default_config_files`: Default is [`development.yml`, `development.local.yml`]
+* `allow_nil`: Default is `true`
+* `nil_word`: Default is `null`
+* `mode`: No default value
+* `workdir`: No default value
+* `schema`: Configuration validation schema. If available, the loaded, merged and parsed configuration is validated against this schema. See [Dry-Schema](https://dry-rb.org/gems/dry-schema/) for more information.
 
 ### Data types
 
