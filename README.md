@@ -44,7 +44,7 @@ Now you can use Konfig anywhere in the code:
 puts Settings.some.configuration.value
 ```
 
-In `file` mode, Konfig, looks for any of the files specified in `default_config_files`. By default and in a non-Rails environment this will be `development.yml` and `development.local.yml` files in `work_dir`. In a Rails environment, this will be `ENVIRONMENT.yml` and `ENVIRONMENT.local.yml` files (ie `production.yml` and `production.local.yml`) files. Files added to the list later will override the values in the earlier defined files. This menas, `production.local.yml` values will override `production.yml` values.
+In `file` mode, Konfig, looks for any of the files specified in `default_config_files`. By default and in a non-Rails environment this will be `development.yml` and `development.local.yml` files in `work_dir`. In a Rails environment, this will be `ENVIRONMENT.yml` and `ENVIRONMENT.local.yml` files (ie `production.yml` and `production.local.yml`) files. Files added to the list later will override the values in the earlier defined files. This means, `production.local.yml` values will override `production.yml` values.
 In `kubernetes` mode, it looks for a file for each one of the given configuration keys. For example:
 
 ```yml
