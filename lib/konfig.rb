@@ -22,6 +22,7 @@ module Konfig
     attr_writer :workdir
     attr_writer :env_prefix
     attr_writer :logger
+    attr_writer :fail_on_validation
 
     def namespace
       @namespace || "Settings"
@@ -82,6 +83,10 @@ module Konfig
 
     def nil_word
       @nil_word || "null"
-    end
+	end
+
+	def fail_on_validation
+		@fail_on_validation.nil? ? true : @fail_on_validation
+	end
   end
 end

@@ -84,6 +84,7 @@ You can change or reach the following from `Konfig.configuration`
 * `mode`: No default value
 * `workdir`: No default value
 * `schema`: Configuration validation schema. If available, the loaded, merged and parsed configuration is validated against this schema. See [Dry-Schema](https://dry-rb.org/gems/dry-schema/) for more information.
+* `fail_on_validation`: Fail if schema validation fails
 
 ### Data types
 

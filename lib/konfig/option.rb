@@ -32,7 +32,11 @@ module Konfig
 
         unless v_res.success?
           error = Konfig::ValidationError.format(v_res)
-          raise Konfig::ValidationError.new("Config validation failed:\n\n#{error}")
+          if Konfig.configuration.fail_on_validation
+            raise Konfig::ValidationError.new("Config validation failed:\n\n#{error}")
+          else
+            Konfig.configuration.logger.error "Config validation failed:\n\n#{error}"
+          end
         end
       end
     end

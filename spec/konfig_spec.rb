@@ -39,7 +39,10 @@ describe Konfig do
     Konfig.configuration.schema do
       required(:bad_item).filled(:string)
     end
+    Konfig.configuration.fail_on_validation = false
+    expect { Konfig.load }.not_to raise_error Konfig::ValidationError
 
+    Konfig.configuration.fail_on_validation = true
     expect { Konfig.load }.to raise_error Konfig::ValidationError
 
     expect do
