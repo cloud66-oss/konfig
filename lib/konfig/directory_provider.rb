@@ -7,6 +7,8 @@ module Konfig
     def initialize(workdir:)
       super(mode: :yaml, workdir: workdir)
       @files = Dir.children(@workdir)
+      # exclude any directories there
+      @files = @files.delete_if { |x| File.directory?(File.join(@workdir, x)) }
     end
 
     def load
