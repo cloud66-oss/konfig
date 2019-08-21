@@ -6,13 +6,13 @@ Gem::Specification.new do |spec|
   spec.name = "rb-konfig"
   spec.version = Konfig::VERSION
   spec.authors = ["Khash Sajadi"]
-  spec.email = ["khash@sajadi.co.uk"]
+  spec.email = ["hello@cloud66.com"]
 
   spec.summary = %q{Konfig is a Kubernetes friendly Rails configuration gem}
-  spec.homepage = "https://github.com/khash/konfig"
+  spec.homepage = "https://github.com/cloud66-oss/konfig/"
 
   spec.metadata["homepage_uri"] = spec.homepage
-  spec.metadata["source_code_uri"] = "https://github.com/khash/konfig"
+  spec.metadata["source_code_uri"] = "https://github.com/cloud66-oss/konfig/"
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
