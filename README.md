@@ -93,7 +93,7 @@ The directory mode, supports the following data types in files and tries to retu
 - Integer
 - Float
 - String
-- Date time
+- Date time (valid ISO8601 formatted strings only)
 - Boolean
 - JSON
 - Null (see above)

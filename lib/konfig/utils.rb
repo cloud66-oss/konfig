@@ -10,7 +10,7 @@ module Konfig
     lambda { |value| Integer(value) rescue NIL_VALUE }, # integer
     lambda { |value| Float(value) rescue NIL_VALUE }, # float
     lambda { |value| (["true", "false"].include?(value)) ? (value == "true") : NIL_VALUE }, # boolean
-    lambda { |value| DateTime.parse(value) rescue NIL_VALUE }, # date time
+    lambda { |value| DateTime.iso8601(value) rescue NIL_VALUE }, # date time
     lambda { |value| (value == Konfig.configuration.nil_word && Konfig.configuration.allow_nil) ? nil : NIL_VALUE }, # nil value
     lambda do |value|
       result = JSON.parse(value, { symbolize_names: true })
