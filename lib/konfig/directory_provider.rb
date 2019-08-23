@@ -1,5 +1,4 @@
 require_relative "config_provider"
-require "date"
 require "json"
 
 module Konfig
