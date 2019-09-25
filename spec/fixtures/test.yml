@@ -4,4 +4,7 @@ foo:
     number: 2
     bool: true
     nil: null
+    forced_string: "12345.12345"
+    forced_string_with_quotes: '12345.12345'
+    float: 12345.12345
 

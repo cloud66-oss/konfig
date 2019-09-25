@@ -24,6 +24,11 @@ describe Konfig::YamlProvider do
     expect(Settings.foo.bar.string).to eq "hello"
     expect(Settings.foo.bar.number).to eq 2
     expect(Settings.foo.bar.bool).to be_truthy
+    expect(Settings.foo.bar.forced_string).to be_a_kind_of String
+    expect(Settings.foo.bar.forced_string).to eq "12345.12345"
+    expect(Settings.foo.bar.forced_string_with_quotes).to eq "12345.12345"
+    expect(Settings.foo.bar.float).to be_a_kind_of Float
+    expect(Settings.foo.bar.float).to eq 12345.12345
   end
 
   it "should parse erb" do
