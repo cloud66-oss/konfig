@@ -6,11 +6,12 @@ describe Konfig::DirectoryProvider do
       "foo.bar.fuzz.float",
       "foo.bar.fuzz.number",
       "foo.bar.fuzz.json",
+      "foo.bar.fuzz.forced_string",
     ]
 
     provider = Konfig::DirectoryProvider.new(workdir: File.join(__dir__, "fixtures", "samples"))
     result = provider.send("build_hash_from_list", list)
-    expect(result.count).to eq 5
+    expect(result.count).to eq 6
     expect(result[0]["foo"]["bar"]["fuzz"]["bool"]).to be_truthy
     expect(result[1]["foo"]["bar"]["fuzz"]["string"]).to eq "hello"
     expect(result[2]["foo"]["bar"]["fuzz"]["float"]).to eq 1.244
@@ -36,6 +37,8 @@ describe Konfig::DirectoryProvider do
     expect(Settings.foo.bar.fuzz.float).to eq 1.244
     expect(Settings.foo.bar.fuzz.string).to eq "hello"
     expect(Settings.foo.bar.fuzz.nil).to be_nil
+    expect(Settings.foo.bar.fuzz.forced_string).to be_a_kind_of String
+    expect(Settings.foo.bar.fuzz.forced_string).to eq "2151604965.732166996786"
 
     Konfig.configuration.allow_nil = false
     provider.load
