@@ -45,12 +45,13 @@ module Konfig
     end
 
     def logger
-      @logger if @logger
+      return @logger if @logger
       if defined?(Rails) && Rails.logger
-        Rails.logger
+        @logger = Rails.logger
       else
-        Logger.new(STDOUT)
+        @logger = Logger.new(STDOUT)
       end
+      @logger
     end
 
     def schema=(value)
