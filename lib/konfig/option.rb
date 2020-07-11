@@ -95,7 +95,6 @@ module Konfig
 
       h.each do |k, v|
         k = k.to_s if !k.respond_to?(:to_sym) && k.respond_to?(:to_s)
-        s.new_ostruct_member(k)
 
         if v.is_a?(Hash)
           v = v["type"] == "hash" ? v["contents"] : __convert(v)
