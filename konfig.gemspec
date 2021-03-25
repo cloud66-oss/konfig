@@ -26,7 +26,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "activesupport", ">= 4"
   spec.add_dependency "dry-schema", "~> 1.3"
-  spec.add_dependency "thor", "~> 0.20"
+  spec.add_dependency "thor", "~> 1.0"
 
   spec.add_development_dependency "bundler", "~> 2.0"
   spec.add_development_dependency "rake", "~> 10.0"
