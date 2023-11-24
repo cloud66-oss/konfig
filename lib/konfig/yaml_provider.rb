@@ -11,14 +11,14 @@ module Konfig
     def initialize(workdir:, filenames: Konfig.configuration.default_config_files)
       super(mode: :yaml, workdir: workdir)
       @files = filenames.map { |f| File.join(workdir, f) }
-      raise FileNotFound, "none of the configuration files (#{@files}) found" if @files.all? { |f| !File.exists?(f) }
+      raise FileNotFound, "none of the configuration files (#{@files}) found" if @files.all? { |f| !File.exist?(f) }
     end
 
     def load(parse = true)
       content = {}
       @files.each do |f|
         # since we've looked for file existence before, we can skip any that's missing
-        next if !File.exists?(f)
+        next if !File.exist?(f)
         Konfig.configuration.logger.info "Loading #{f}"
         file_content = IO.read(f)
         raise FileError, "file #{f} is empty" if file_content.blank?
