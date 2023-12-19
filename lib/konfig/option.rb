@@ -63,10 +63,7 @@ module Konfig
 
       super
     end
-
-    def respond_to_missing?(*args)
-      super
-    end
+    ruby2_keywords(:method_missing) if respond_to?(:ruby2_keywords, true)
 
     def generate_schema(start = nil)
       start = self if start.nil?
